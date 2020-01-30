@@ -1,0 +1,29 @@
+[{
+        "productName": "Tooth Paste",
+        "productId": "1",
+        "productDescription": "Amazing, cheap toothpaste",
+        "productImage": "img/toothpaste.jpg",
+        "productPrice": 2.00
+    },
+    {
+        "productName": "Puppy",
+        "productId": "2",
+        "productDescription": "Amazing, perfect puppy",
+        "productImage": "img/puppy.jpg",
+        "productPrice": 2000.00
+    },
+    {
+        "productName": "Honda Civic",
+        "productId": "3",
+        "productDescription": "Amazing, beatiful Civic",
+        "productImage": "img/honda_civic.jpg",
+        "productPrice": 7000.00
+    },
+    {
+        "productName": "Rock",
+        "productId": "4",
+        "productDescription": "Amazing, piece of dirt",
+        "productImage": "img/rock.jpg",
+        "productPrice": 0.50
+    }
+]

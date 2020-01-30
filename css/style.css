@@ -1,0 +1,64 @@
+body div#main .none {
+    transition: opacity 1s ease-out;
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+}
+
+.product-div,
+.cart {
+    transition: all 2000ms ease-in-out;
+}
+
+.product-div:hover div.hidden-product-description {
+    opacity: 1;
+    height: auto;
+    position: absolute;
+    top: 0;
+    background: #fff;
+    border-radius: 0 0 12px 0;
+    color: #3e3d3d;
+    font-weight: 600;
+    padding: 5px 8px;
+    z-index: 9;
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+}
+
+div.cart {
+    opacity: 1;
+    height: auto;
+    position: fixed;
+    bottom: 28px;
+    left: 20px;
+    background: #00bc8c;
+    height: 85px;
+    width: 85px;
+    border-radius: 50%;
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+}
+
+div.cart span {
+    position: absolute;
+    background: #fff;
+    color: #3e3d3d;
+    font-weight: 600;
+    padding: 2px 8px;
+}
+
+span.cart-total {
+    bottom: -12px;
+    left: 3px;
+    border-radius: 12px;
+}
+
+span.cart-count {
+    top: 0;
+    left: 56px;
+    border-radius: 50%;
+}
+
+i.cart-icon {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+}
