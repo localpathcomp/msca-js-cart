@@ -11,8 +11,8 @@ body div#main .none {
 }
 
 .product-div:hover div.hidden-product-description {
-    opacity: 1;
-    height: auto;
+    opacity: 1 !important;
+    height: auto !important;
     position: absolute;
     top: 0;
     background: #fff;
