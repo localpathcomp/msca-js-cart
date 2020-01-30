@@ -5,9 +5,12 @@ body div#main .none {
     overflow: hidden;
 }
 
-.product-div,
-.cart {
+.product-div {
     transition: all 2000ms ease-in-out;
+}
+
+.cart {
+    transition: all 500ms ease-in-out;
 }
 
 .product-div:hover div.hidden-product-description {

@@ -13,7 +13,7 @@ let cartObj = {
             items = document.querySelectorAll('.add-to-cart');
             for (let i = 0; i < items.length; i++) {
                 const item = items[i];
-                item.addEventListener('click', function(e) {
+                item.addEventListener('click', function() {
                     let found = false;
                     let name = item.getAttribute('data-product-name');
                     let price = item.getAttribute('data-product-price');
