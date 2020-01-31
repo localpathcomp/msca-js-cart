@@ -34,7 +34,7 @@ let cartObj = {
                     if (!found) {
                         cartObj.cart.push({ name, price, qty: 1 });
                     }
-                    localStorage.setItem('cart', JSON.stringify(cartObj.cart));
+                    cartObj.model.setLocalStorage('cart', cartObj.cart);
                     cartObj.view.updateCart();
                 });
             }
@@ -42,8 +42,11 @@ let cartObj = {
         updateQty: function() {
             let cartProdInputs = document.querySelectorAll('#productsModalTable input');
             cartProdInputs.forEach(el => {
-                cartObj.cart[el.getAttribute('data-idx')].qty = el.value;
+                cartObj.cart[el.getAttribute('data-idx')].qty = parseInt(el.value, 10);
             });
+        },
+        setLocalStorage: function(key, data) {
+            localStorage.setItem(key, JSON.stringify(data));
         },
         getLocalStorage: function() {
             if (!localStorage.getItem('cart')) {
@@ -64,6 +67,7 @@ let cartObj = {
     view: {
         updateCart: function(where) {
             if (where === 'modal') {
+                productsModalTable.innerHTML = '';
                 cartObj.cart.forEach((el, idx) => {
                     productsModalTable.insertAdjacentHTML('beforeend', `
                     <tr>
@@ -127,7 +131,9 @@ let cartObj = {
         },
         updateQty: function() {
             cartObj.model.updateQty();
-            $('#updateCartModal').modal('hide');
+            cartObj.model.setLocalStorage('cart', cartObj.cart);
+            cartObj.view.updateCart();
+            $('#viewCartModal').modal('hide');
         }
     }
 }
