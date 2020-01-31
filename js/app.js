@@ -1,15 +1,22 @@
 let productRow = document.querySelector('.products-feed'),
     entryTitle = document.getElementById('entry-title'),
     cart = document.getElementById('cart'),
+    clearCartBtn = document.getElementById('clearCartBtn'),
+    viewCartBtn = document.getElementById('viewCartBtn'),
+    productsModalTable = document.getElementById('productsModalTable'),
+    submitUpdatCartBtn = document.getElementById('submitUpdatCartBtn'),
     cartCount,
     cartTotal,
     items;
 
 let cartObj = {
     cart: [],
+    currencyRate: 1,
     model: {
         getCart: function() {
             document.getElementById('clearCart').addEventListener('click', cartObj.controller.destroy);
+            viewCartBtn.addEventListener('click', cartObj.controller.update);
+            submitUpdatCartBtn.addEventListener('click', cartObj.controller.updateQty);
             items = document.querySelectorAll('.add-to-cart');
             for (let i = 0; i < items.length; i++) {
                 const item = items[i];
@@ -32,6 +39,12 @@ let cartObj = {
                 });
             }
         },
+        updateQty: function() {
+            let cartProdInputs = document.querySelectorAll('#productsModalTable input');
+            cartProdInputs.forEach(el => {
+                cartObj.cart[el.getAttribute('data-idx')].qty = el.value;
+            });
+        },
         getLocalStorage: function() {
             if (!localStorage.getItem('cart')) {
                 return;
@@ -44,28 +57,49 @@ let cartObj = {
         clearCart: function() {
             localStorage.clear();
             cartObj.cart = [];
+            productsModalTable.innerHTML = '';
             cartObj.view.updateCart();
         }
     },
     view: {
-        updateCart: function() {
-            cartCount = document.getElementById('cartCount');
-            cartTotal = document.getElementById('cartTotal');
-            let totalAmount = 0,
-                totalCount = 0;
-            for (let i = 0; i < cartObj.cart.length; i++) {
-                const item = cartObj.cart[i];
-                totalAmount += item.price * item.qty;
-                totalCount += item.qty;
+        updateCart: function(where) {
+            if (where === 'modal') {
+                cartObj.cart.forEach((el, idx) => {
+                    productsModalTable.insertAdjacentHTML('beforeend', `
+                    <tr>
+                    <td>${el.name}</td>
+                    <td>${el.price}</td>
+                    <td><input class="form-control" type="number" step="1" min="0" max="9999" placeholder="${el.qty}" value="${el.qty}" data-idx="${idx}"></td>
+                  </tr>
+                    `);
+                });
+
+            } else {
+                cartCount = document.getElementById('cartCount');
+                cartTotal = document.getElementById('cartTotal');
+                let totalAmount = 0,
+                    totalCount = 0;
+                for (let i = 0; i < cartObj.cart.length; i++) {
+                    const item = cartObj.cart[i];
+                    totalAmount += item.price * item.qty;
+                    totalCount += item.qty;
+                }
+                cartTotal.innerText = `$${totalAmount.toFixed(2)}`;
+                cartCount.innerText = `${totalCount}`;
+                if (totalCount > 0) {
+                    cart.classList.remove('none');
+                    clearCartBtn.classList.remove('none');
+                    viewCartBtn.classList.remove('none');
+                } else {
+                    cart.classList.add('none');
+                    clearCartBtn.classList.add('none');
+                    viewCartBtn.classList.add('none');
+                }
             }
-            cartTotal.innerText = `$${totalAmount.toFixed(2)}`;
-            cartCount.innerText = `${totalCount}`;
-            (totalCount > 0) ? cart.classList.remove('none'): cart.classList.add('none');
         },
         getProducts: async function() {
             let response = await fetch('assets/products.json');
             let products = await response.json();
-            /* await new Promise(r => setTimeout(r, 5000)); */
             products.forEach(el => {
                 productRow.insertAdjacentHTML('beforeend', `
                 <div class="col-6 col-md-3 pb-5 text-center product-div">
@@ -81,12 +115,19 @@ let cartObj = {
     controller: {
         init: async function() {
             await cartObj.view.getProducts();
-            await cartObj.model.getLocalStorage();
-            await cartObj.model.getCart();
+            cartObj.model.getLocalStorage();
+            cartObj.model.getCart();
         },
-        destroy: async function() {
-            await cartObj.model.clearCart();
-            alert('success');
+        destroy: function() {
+            cartObj.model.clearCart();
+            $('#clearCartModal').modal('hide');
+        },
+        update: function() {
+            cartObj.view.updateCart('modal');
+        },
+        updateQty: function() {
+            cartObj.model.updateQty();
+            $('#updateCartModal').modal('hide');
         }
     }
 }
