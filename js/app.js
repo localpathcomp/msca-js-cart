@@ -1,3 +1,5 @@
+import LocalStorage from './components/LocalStorage.js';
+
 let productRow = document.querySelector('.products-feed'),
     entryTitle = document.getElementById('entry-title'),
     cart = document.getElementById('cart'),
@@ -34,7 +36,7 @@ let cartObj = {
                     if (!found) {
                         cartObj.cart.push({ name, price, qty: 1 });
                     }
-                    cartObj.model.setLocalStorage('cart', cartObj.cart);
+                    LocalStorage.set('cart', cartObj.cart);
                     cartObj.view.updateCart();
                 });
             }
@@ -45,14 +47,11 @@ let cartObj = {
                 cartObj.cart[el.getAttribute('data-idx')].qty = parseInt(el.value, 10);
             });
         },
-        setLocalStorage: function(key, data) {
-            localStorage.setItem(key, JSON.stringify(data));
-        },
         getLocalStorage: function() {
             if (!localStorage.getItem('cart')) {
                 return;
             } else {
-                let persistCart = JSON.parse(localStorage.getItem('cart'));
+                let persistCart = LocalStorage.get('cart');
                 cartObj.cart = persistCart;
                 cartObj.view.updateCart();
             }
@@ -131,7 +130,7 @@ let cartObj = {
         },
         updateQty: function() {
             cartObj.model.updateQty();
-            cartObj.model.setLocalStorage('cart', cartObj.cart);
+            LocalStorage.set('cart', cartObj.cart);
             cartObj.view.updateCart();
             $('#viewCartModal').modal('hide');
         }
